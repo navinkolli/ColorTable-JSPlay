@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Author:Naveen Kolli -->
+<!-- Title: Table with mouseover colors -->
+<!-- Technologies: HTML,CSS, Javascript -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <title>ColorBoxJS</title>
+</head>
+<style>
+    body {
+        margin: 0px;
+    }
+
+    h1 {
+        text-align: center;
+        color: rgb(30, 30, 145);
+        font-family: Arial, Helvetica, sans-serif;
+
+    }
+
+    div {
+        width: 100%;
+    }
+
+    div button {
+        position: relative;
+        left: 561px;
+    }
+
+    td {
+        border: 1px solid black;
+        /* width: 60px;
+        height: 60px; */
+        padding: 20px;
+    }
+    .colorStore
+    {
+    position: relative;
+display: flex;
+justify-content:fl;
+
+    }
+
+
+    /* .clearit {
+        position: absolute;
+        left: 916px;
+        top: 28px;
+    } */
+</style>
+
+<body>
+    <h1>Color Table</h1>
+    <div>
+        <button onclick="addRow()">Add a row </button>
+        <button onclick="addCol()">Add a column</button>
+        <button onclick="delRow()">Delete a row</button>
+        <button onclick="delCol()">Delete a Column</button>
+        <button class="clearit" onclick="deletedom()">Clear</button>
+    </div>
+<div class="colorStore">
+<p>ColorStore</p>
+</div>
+</body>
+<script>
+    let tableSize = prompt("Enter the Size of Table");
+    let wrapIt = document.createElement('div');
+    let table = document.createElement('table');
+    let rows, cells, dynamicSelector;
+    let eventWrap;
+    let targetNow, flag = 0;
+    let defcolor, fixColor, tableRow, tabledefine1, tabledefine2, i;
+    let colorStore = [];
+    let tableRows;
+    for (rows = 0; rows < tableSize; rows++) {
+        tableRow = document.createElement('tr');
+        for (cells = 0; cells < tableSize; cells++) {
+            tabledefine1 = document.createElement('td');
+
+
+            tableRow.appendChild(tabledefine1);
+        }
+
+        table.appendChild(tableRow);
+    }
+    wrapIt.appendChild(table);
+    document.body.appendChild(wrapIt);
+    eventWrap = document.querySelector('table');
+    eventWrap.addEventListener('mouseover', (e) => {
+
+        // targetbox.innerHTML='naveen';
+        if (e.target.tagName === 'TD') {
+            targetNow = e.target;
+            // if (!colorStore.includes(ChangeBackground()))
+            defcolor = genColor();
+            fixColor = adjacentFind(targetNow.cellIndex, targetNow.parentElement.rowIndex, defcolor);
+            // console.log(fixColor)
+
+            targetNow.style.backgroundColor = fixColor;
+            colorStore.push(fixColor);
+            console.log(colorStore);
+
+
+            // console.log('cell index  ' + targetNow.cellIndex + ' row index' + targetNow.parentElement.rowIndex);
+
+
+
+        }
+    })
+
+    function adjacentFind(fcell, frow, defcolor) {
+        frow = frow + 1;
+        fcell = fcell + 1;
+        // console.log(defcolor)
+
+        // console.log(fcell,frow);
+
+        let strFind = "table > tr:nth-child(" + frow + ")>td:nth-child(" + fcell + ")";
+        let foundDom = document.querySelector(strFind);
+        // console.log(foundDom);
+        if (document.querySelector("table > tr:nth-child(" + (frow - 1) + ")>td:nth-child(" + (fcell + 1) + ")") !==
+            null) {
+            if (document.querySelector("table > tr:nth-child(" + (frow - 1) + ")>td:nth-child(" + (fcell + 1) + ")").style
+                .backgroundColor == defcolor) {
+                defcolor = genColor();
+                console.log('frist');
+            }
+        }
+
+        if (document.querySelector("table > tr:nth-child(" + (frow + 1) + ")>td:nth-child(" + (fcell - 1) + ")") !==
+            null) {
+            if (document.querySelector("table > tr:nth-child(" + (frow + 1) + ")>td:nth-child(" + (fcell - 1) + ")").style
+                .backgroundColor == defcolor) {
+                defcolor = genColor();
+                console.log('frist');
+            }
+        }
+        if (document.querySelector("table > tr:nth-child(" + (frow - 1) + ")>td:nth-child(" + fcell + ")") !==
+            null) {
+            if (document.querySelector("table > tr:nth-child(" + (frow - 1) + ")>td:nth-child(" + fcell + ")").style.backgroundColor ==
+                defcolor) {
+                defcolor = genColor();
+                console.log('frist');
+            }
+        }
+        if (document.querySelector("table > tr:nth-child(" + (frow + 1) + ")>td:nth-child(" + fcell + ")") !==
+            null) {
+            if (document.querySelector("table > tr:nth-child(" + (frow + 1) + ")>td:nth-child(" + fcell + ")").style.backgroundColor ==
+                defcolor) {
+                defcolor = genColor();
+                console.log('frist');
+            }
+        }
+        if (document.querySelector("table > tr:nth-child(" + frow + ")>td:nth-child(" + (fcell + 1) + ")") !==
+            null) {
+            if (document.querySelector("table > tr:nth-child(" + frow + ")>td:nth-child(" + (fcell + 1) + ")").style.backgroundColor ==
+                defcolor) {
+                defcolor = genColor();
+                console.log('frist');
+            }
+        }
+        if (document.querySelector("table > tr:nth-child(" + (frow) + ")>td:nth-child(" + (fcell - 1) + ")") !==
+            null) {
+            if (document.querySelector("table > tr:nth-child(" + (frow) + ")>td:nth-child(" + (fcell - 1) + ")").style.backgroundColor ==
+                defcolor) {
+                defcolor = genColor();
+                // console.log('frist');
+            }
+        }
+
+        return defcolor;
+
+
+    }
+
+
+    function genColor() {
+
+        // const arcolor=['rgb(142, 25, 133)','rgb(165, 25, 133)','rgb(56, 215, 62)'];
+        // let  randy=Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+
+        return `rgb(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)})`
+        // return `rgb(255, 0, 0)`;
+        // return arcolor[randy];
+    }
+
+    function deletedom() {
+        var selectAll = document.querySelector('div');
+        selectAll.remove();
+        console.log('deleted');
+        location.reload();
+    }
+
+    function delCol() {
+        tableRows = document.querySelector('table').rows;
+        let coldNumber = prompt('enter the column number');
+        console.log(tableRows[0].cells.cells);
+
+
+        for (i = 0; i < tableRows.length; i++) {
+            tableRows[i].deleteCell(coldNumber);
+            // console.log(tableRows[i]);
+
+
+        }
+
+
+    }
+
+    function addCol() {
+
+        tableRows = document.querySelector('table').rows;
+        // console.log('the table rows are ' + tableRows.length)
+        for (i = 0; i < tableRows.length; i++) {
+            tabledefine1 = document.createElement('td');
+            tableRows[i].appendChild(tabledefine1);
+            // console.log(tableRows[i]);
+
+
+        }
+
+
+
+    }
+
+    function addRow() {
+        tableRows = document.querySelector('table').rows;
+        tableRow = document.createElement('tr');
+
+        for (i = 0; i < tableRows[0].cells.length; i++) {
+
+            tabledefine1 = document.createElement('td');
+
+            tableRow.appendChild(tabledefine1);
+
+        }
+        // console.log('the table rows are ' + tableRows.length)
+        document.querySelector('table').appendChild(tableRow)
+
+    }
+
+    function delRow() {
+        let rowdNumber = prompt('enter the row number');
+        document.querySelector('table > tr:nth-child(' + rowdNumber + ')').remove();
+    }
+</script>
+
+</html>
